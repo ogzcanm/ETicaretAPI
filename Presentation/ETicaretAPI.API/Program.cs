@@ -25,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();// wwwroot patghini kullanmak için
 app.UseCors();//CORS politikasýný kullanmak için
 
 app.UseHttpsRedirection();
