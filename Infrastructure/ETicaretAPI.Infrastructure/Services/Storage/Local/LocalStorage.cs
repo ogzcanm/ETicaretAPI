@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace ETicaretAPI.Infrastructure.Services.Storage.Local
 {
 
-    public class LocalStorage : ILocalStorage
+    public class LocalStorage : Storage, ILocalStorage
     {
 
         readonly IWebHostEnvironment _webHostEnvironment;
@@ -64,8 +64,11 @@ namespace ETicaretAPI.Infrastructure.Services.Storage.Local
             List<(string fileName, string path)> datas = new();
             foreach (IFormFile file in files)
             {
-                await CopyFileAsync($"{uploadPath}\\{file.Name}", file);
-                datas.Add((file.Name, $"{path}\\{file.Name}"));
+                string fileNewNAme = await FileRenameAsync(uploadPath, HasFile, file.Name);
+
+
+                await CopyFileAsync($"{uploadPath}\\{fileNewNAme}", file);
+                datas.Add((fileNewNAme, $"{path}\\{fileNewNAme}"));
             }
 
             //todo eğer ki yukarıdaki if geçerli değilse burada dosyaların sunucuda yüklenirken hata alındığına dair uyarıcı bir exeption oluşturlup fırlatılması gerekiyor.
