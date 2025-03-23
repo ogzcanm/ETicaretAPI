@@ -99,45 +99,32 @@ namespace ETicaretAPI.API.Controller
             return Ok();
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> Upload()
+        public async Task<IActionResult> Upload(string id)
         {
+            //DOSYA EKLEME
+            //var datas = await _storageService.UploadAsync("files", Request.Form.Files);
 
-            var datas = await _storageService.UploadAsync("files", Request.Form.Files);
+            //await _productImageFileWriteRepository.AddRangeAsync(datas.Select(d => new ProductImagesFile()
+            //{
+            //    FileName = d.fileName,
+            //    Path = d.pathOrContainerName,
+            //    Storage = _storageService.StorageName
+            //}).ToList());
+            //await _productImageFileWriteRepository.SaveAsync();
 
+            List<(string fileName, string pathOrContainerName)> result = await _storageService.UploadAsync("photo-images",Request.Form.Files);
 
+            Product product = await _productReadRepository.GetByIdAsync(id);
 
-
-
-            //var datas = await _fileService.UploadAsync("resource/files",Request.Form.Files);
-
-            await _productImageFileWriteRepository.AddRangeAsync(datas.Select(d => new ProductImagesFile()
+            await _productImageFileWriteRepository.AddRangeAsync(result.Select(r => new ProductImagesFile
             {
-                FileName = d.fileName,
-                Path = d.pathOrContainerName,
-                Storage = _storageService.StorageName
+                FileName = r.fileName,
+                Path = r.pathOrContainerName,
+                Storage = _storageService.StorageName,
+                Products = new List<Product>() {product}
             }).ToList());
+
             await _productImageFileWriteRepository.SaveAsync();
-
-
-            //await _ınvoiceFileWriteRepository.AddRangeAsync(datas.Select(d => new InvoiceFile()
-            //{
-            //    FileName = d.fileName,
-            //    Path = d.path,
-            //    Price = new Random().Next()
-            //}).ToList());
-            //await _ınvoiceFileWriteRepository.SaveAsync();
-
-
-            //await _fileWriteRepository.AddRangeAsync(datas.Select(d => new ETicaretAPI.Domain.Entities.File()
-            //{
-            //    FileName = d.fileName,
-            //    Path = d.path
-            //}).ToList());
-            //await _fileWriteRepository.SaveAsync();
-
-            //var d1 = _fileReadRepository.GetAll(false);
-            //var d2 = _ınvoiceFileReadRepository.GetAll(false);
-            //var d3 = _productImageFileReadRepository.GetAll(false);
 
             return Ok();
         }
