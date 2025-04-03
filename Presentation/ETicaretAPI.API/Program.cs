@@ -50,6 +50,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 var app = builder.Build();
 
 
+// Cross-Origin-Opener-Policy baþlýðýný ekle
+app.Use(async (context, next) =>
+{
+    // Eðer farklý kökenlerden gelen pop-up'lar veya iframe'lerle iletiþim kurmak istiyorsanýz
+    context.Response.Headers.Add("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+
+    // Cross-Origin-Embedder-Policy baþlýðýný ekleyin (Opsiyonel)
+    context.Response.Headers.Add("Cross-Origin-Embedder-Policy", "require-corp");
+
+    await next.Invoke();
+});
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
