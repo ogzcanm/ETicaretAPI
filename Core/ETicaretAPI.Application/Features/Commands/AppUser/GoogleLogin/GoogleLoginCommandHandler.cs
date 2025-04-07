@@ -26,20 +26,20 @@ namespace ETicaretAPI.Application.Features.Commands.AppUser.GoogleLogin
         {
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
-                Audience = new List<string> {"894462296372-vc7madqnhl9gtbopcm385v8udni2rsvf.apps.googleusercontent.com"}
+                Audience = new List<string> { "894462296372-vc7madqnhl9gtbopcm385v8udni2rsvf.apps.googleusercontent.com" }
             };
 
-            var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken,settings);
+            var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
 
             var info = new UserLoginInfo(request.Provider, payload.Subject, request.Provider);
 
             Domain.Entities.Identity.AppUser user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
 
             bool result = user != null;
-            if(user == null)
+            if (user == null)
             {
                 user = await _userManager.FindByEmailAsync(payload.Email);
-                if(user == null)
+                if (user == null)
                 {
                     user = new()
                     {
