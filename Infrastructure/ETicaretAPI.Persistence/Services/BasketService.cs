@@ -52,7 +52,7 @@ namespace ETicaretAPI.Persistence.Services
                                   Order = order
                               };
                 Basket? targetBasket = null;
-                if(_basket.Any(b=>b.Order is null))
+                if (_basket.Any(b => b.Order is null))
                 {
                     targetBasket = _basket.FirstOrDefault(b => b.Order is null)?.Basket;
                 }
@@ -70,7 +70,7 @@ namespace ETicaretAPI.Persistence.Services
         public async Task AddItemToBasketAsync(VM_Create_BasketItem basketItem)
         {
             Basket? basket = await ContextUser();
-            if(basket != null)
+            if (basket != null)
             {
                 BasketItem _basketItem = await _basketItemReadRepository.GetSingleAsync(bi => bi.BasketId == basket.Id && bi.ProductId == Guid.Parse(basketItem.ProductId));
                 if (_basketItem != null)
@@ -100,13 +100,13 @@ namespace ETicaretAPI.Persistence.Services
                 .FirstOrDefaultAsync(b => b.Id == basket.Id);
 
             return result.BasketItems.ToList();
-            
+
         }
 
         public async Task RemoveBasketItemAsync(string basketItemId)
         {
             BasketItem? basketItem = await _basketItemReadRepository.GetByIdAsync(basketItemId);
-            if(basketItem != null)
+            if (basketItem != null)
             {
                 _basketItemWriteRepository.Remove(basketItem);
                 await _basketItemWriteRepository.SaveAsync();
@@ -121,6 +121,15 @@ namespace ETicaretAPI.Persistence.Services
                 _basketItem.Quantity = basketItem.Quantity;
                 await _basketItemWriteRepository.SaveAsync();
 
+            }
+        }
+
+        public Basket? GetUserActiveBasket
+        {
+            get
+            {
+                Basket? basket = ContextUser().Result;
+                return basket;
             }
         }
     }

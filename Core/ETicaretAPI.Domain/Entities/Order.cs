@@ -9,11 +9,11 @@ namespace ETicaretAPI.Domain.Entities
 {
     public class Order : BaseEntity
     {
-        public Guid CustomerId { get; set; }
+        //public Guid CustomerId { get; set; }
         public string Description { get; set; }
         public string Adress { get; set; }
         public Basket Basket { get; set; }
-        public ICollection<Product> Products { get; set; }
-        public Customer Customers { get; set; }
+        //public ICollection<Product> Products { get; set; }
+        //public Customer Customers { get; set; }
     }
 }

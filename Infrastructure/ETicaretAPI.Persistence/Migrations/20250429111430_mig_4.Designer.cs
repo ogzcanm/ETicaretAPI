@@ -3,6 +3,7 @@ using System;
 using ETicaretAPI.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ETicaretAPI.Persistence.Migrations
 {
     [DbContext(typeof(ETicaretAPIDbContext))]
-    partial class ETicaretAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250429111430_mig_4")]
+    partial class mig_4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,6 +242,9 @@ namespace ETicaretAPI.Persistence.Migrations
                     b.Property<string>("Adress")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("BasketId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
