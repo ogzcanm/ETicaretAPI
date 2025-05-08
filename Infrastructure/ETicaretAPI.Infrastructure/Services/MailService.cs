@@ -18,7 +18,6 @@ namespace ETicaretAPI.Infrastructure.Services
         {
             _configuration = configuration;
         }
-
         public async Task SendMailAsync(string to, string subject, string body, bool isBodyHtml = true)
         {
             await SendMailAsync(new[] { to }, subject, body, isBodyHtml);
@@ -56,6 +55,13 @@ namespace ETicaretAPI.Infrastructure.Services
             mail.AppendLine("\">Yeni şifre talebi için tıklayınız!.. </a></strong><br><br><span style=\"font-size:12px\">Eğer ki bu talep tarafınızca gerçekleştirilmemişse lütfen bu maili ciddiye almayın</span><br><br>Saygılarımızla..<br><br><br>Alverium Alışveriş");
 
             await SendMailAsync(to,"Şifre Yenileme Talebi",mail.ToString());
+        }
+        public async Task SendCompletedOrderMailAsync(string to, string orderCode, DateTime orderDate, string userName)
+        {
+            string mail = $"Sayın {userName} Merhaba<br>" +
+                $"{orderDate} tarihinde vermiş olduğunuz {orderCode} kodlu siparişiniz tamamlanmış ve kargo firmasına verilmiştir.<br>Bizi tercih ettiğiniz için teşekkürler...";
+
+            await SendMailAsync(to, $"{orderCode} Sipariş Numaralı Siparişiniz Tamamlandı", mail);
         }
     }
 }
