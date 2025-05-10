@@ -50,7 +50,7 @@ namespace ETicaretAPI.Infrastructure.Services.Configurations
                                 Application.DTOs.Configuration.Action _action = new()
                                 {
                                     ActionType = Enum.GetName(typeof(ActionType),authorizeDefinitionAttribute.ActionType),
-                                    Defination = authorizeDefinitionAttribute.Definition,
+                                    Definition = authorizeDefinitionAttribute.Definition,
                                     
                                 };
                                 var httpAttribute = attributes.FirstOrDefault(a => a.GetType().IsAssignableTo(typeof(HttpMethodAttribute))) as HttpMethodAttribute;
@@ -62,7 +62,7 @@ namespace ETicaretAPI.Infrastructure.Services.Configurations
                                 {
                                     _action.HttpType = HttpMethods.Get;
                                 }
-                                _action.Code = $"{_action.HttpType}.{_action.ActionType}.{_action.Defination.Replace(" ","")}";
+                                _action.Code = $"{_action.HttpType}.{_action.ActionType}.{_action.Definition.Replace(" ","")}";
                                 menu.Actions.Add(_action);
                             }
                         }
