@@ -32,8 +32,17 @@ namespace ETicaretAPI.Persistence.Services
 
         public (object, int) GetAllRoles(int page,int size)
         {
-            var data = _roleManager.Roles.Skip(page * size).Take(size).Select(r => new { r.Id, r.Name });
-            return (data, _roleManager.Roles.Count());
+            var query = _roleManager.Roles;
+            IQueryable<AppRole> rolesQuery = null;
+            if(page!= -1 && size != -1)
+            {
+                rolesQuery = query.Skip(page * size).Take(size);
+            }
+            else
+            {
+                rolesQuery = query;
+            }
+            return (rolesQuery.Select(r => new {r.Id,r.Name}),query.Count());
         }
 
         public async Task<(string id, string name)> GetRoleById(string id)
